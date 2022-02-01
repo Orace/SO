@@ -18,6 +18,7 @@
                     HorizontalAlignment="Right">
             <Button Command="{Binding AddCommand, Mode=OneWay}" Margin="2">Add</Button>
             <Button Command="{Binding RemoveCommand, Mode=OneWay}" Margin="2">Remove</Button>
+            <Label FontFamily="Helvetica, Arial, Segoe UI"></Label>
         </StackPanel>
 
         <controls:DataGridEx ItemsSource="{Binding Path=Items}">
