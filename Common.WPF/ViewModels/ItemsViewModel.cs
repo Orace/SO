@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Microsoft.Xaml.Behaviors.Core;
 
-namespace SO_70639538.ViewModels;
+namespace Common.WPF.ViewModels;
 
 public class ItemsViewModel
 {

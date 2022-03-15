@@ -1,3 +1,3 @@
-﻿namespace SO_70639538.ViewModels;
+﻿namespace Common.WPF.ViewModels;
 
 public record ItemViewModel(string Label, int Value);
