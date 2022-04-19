@@ -1,0 +1,21 @@
+﻿<Window x:Class="SO_71919433.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SO_71919433"
+        xmlns:vlc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Grid>
+        <vlc:VideoView x:Name="VideoView">
+            <Button x:Name="PlayButton"
+                    Click="PlayButtonOnClick"
+                    Content="Play"
+                    Margin="8"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom" />
+        </vlc:VideoView>
+    </Grid>
+</Window>
