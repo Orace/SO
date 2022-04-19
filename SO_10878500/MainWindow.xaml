@@ -1,0 +1,69 @@
+﻿<Window x:Class="SO_10878500.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:SO_10878500.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Window.DataContext>
+        <viewModels:ItemsViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <CollectionViewSource x:Key="CollectionViewSource"
+                              Source="{Binding Items}"
+                              IsLiveGroupingRequested="True">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Group" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
+
+    <DataGrid AutoGenerateColumns="False"
+              ItemsSource="{Binding Source={StaticResource CollectionViewSource}}">
+        <DataGrid.GroupStyle>
+            <GroupStyle>
+                <GroupStyle.ContainerStyle>
+                    <Style TargetType="{x:Type GroupItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                    <GroupBox>
+                                        <GroupBox.Header>
+                                            <TextBlock Text="{Binding Path=(CollectionViewGroup.Name).(viewModels:Group.Name)}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Path=(CollectionViewGroup.Name).(viewModels:Group.IsRed)}"
+                                                                         Value="True">
+                                                                <Setter Property="Foreground" Value="Red" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </GroupBox.Header>
+                                        <ItemsPresenter />
+                                    </GroupBox>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </GroupStyle.ContainerStyle>
+            </GroupStyle>
+        </DataGrid.GroupStyle>
+
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="Label" Binding="{Binding Path=Label}"/>
+            <DataGridTemplateColumn Header="Actions">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate DataType="viewModels:ItemViewModel">
+                        <Button Command="{Binding ChangeGroupAction}">Change group</Button>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
+</Window>
