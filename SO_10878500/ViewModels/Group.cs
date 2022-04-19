@@ -1,11 +1,10 @@
-﻿namespace SO_10878500.ViewModels;
+﻿using System;
 
-public class Group
+namespace SO_10878500.ViewModels;
+
+public class Group : IEquatable<Group>
 {
-    public static Group GroupOfP { get; } = new("Group of P", false);
-    public static Group GroupOfG { get; } = new("Group of G", true);
-
-    private Group(string name, bool isRed)
+    public Group(string name, bool isRed)
     {
         Name = name;
         IsRed = isRed;
@@ -14,4 +13,17 @@ public class Group
     public string Name { get; }
 
     public bool IsRed { get; }
+
+    public bool Equals(Group? other)
+    {
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Name == other.Name && IsRed == other.IsRed;
+    }
+
+    public override bool Equals(object? obj) => obj is Group other && Equals(other);
+    public override int GetHashCode() => HashCode.Combine(Name, IsRed);
+
+    public static bool operator ==(Group? left, Group? right) => Equals(left, right);
+    public static bool operator !=(Group? left, Group? right) => !Equals(left, right);
 }

@@ -19,7 +19,7 @@ public class ItemViewModel : NotifyPropertyChangedBase
 
     private void ChangeGroup()
     {
-        Group = Group == Group.GroupOfG ? Group.GroupOfP : Group.GroupOfG;
+        Group = Group.IsRed ? new Group("Group of P", false) : new Group("Group of G", true);
     }
 
     public ICommand ChangeGroupAction { get; }

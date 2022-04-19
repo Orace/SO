@@ -8,10 +8,10 @@ public class ItemsViewModel
     {
         Items = new ObservableCollection<ItemViewModel>
         {
-            new(Group.GroupOfP, "Pipo"),
-            new(Group.GroupOfP, "Poil"),
-            new(Group.GroupOfG, "Gigo"),
-            new(Group.GroupOfG, "Goil"),
+            new(new Group("Group of P", false), "Pipo"),
+            new(new Group("Group of P", false), "Poil"),
+            new(new Group("Group of G", true), "Gigo"),
+            new(new Group("Group of G", true), "Goil")
         };
     }
 
