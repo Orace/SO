@@ -15,7 +15,7 @@ public abstract class NotifyPropertyChangedBase : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected void Update<T>(ref T target,
+    protected bool Update<T>(ref T target,
                              T newValue,
                              IEqualityComparer<T>? equalityComparer = null,
                              [CallerMemberName] string? propertyName = null)
@@ -23,7 +23,7 @@ public abstract class NotifyPropertyChangedBase : INotifyPropertyChanged
         equalityComparer ??= EqualityComparer<T>.Default;
 
         if (equalityComparer.Equals(target, newValue))
-            return;
+            return false;
 
         target = newValue;
         if (_dispatcher.CheckAccess())
@@ -34,10 +34,12 @@ public abstract class NotifyPropertyChangedBase : INotifyPropertyChanged
         {
             var propertyChanged = PropertyChanged;
             if (propertyChanged is null)
-                return;
+                return true;
 
             _dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                     () => propertyChanged(this, new PropertyChangedEventArgs(propertyName)));
         }
+
+        return true;
     }
 }
