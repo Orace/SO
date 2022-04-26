@@ -7,125 +7,195 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
-    <Window.Resources>
-        <local:StepsDurationConverter x:Key="StepsDurationConverter" />
-        <local:StepsStartConverter x:Key="StepsStartConverter" />
-        <local:StepsStopConverter x:Key="StepsStopConverter" />
-
-        <Style x:Key="CellTextMiddleStyle" TargetType="TextBlock">
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-
-        <Style x:Key="ListViewInColumnStyle" TargetType="ListView">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="ItemContainerStyle">
-                <Setter.Value>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListViewItem">
-                                    <Border x:Name="Border"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="LightGray"
-                                            BorderThickness="0 1 0 0">
-                                        <ContentPresenter Content="{TemplateBinding Content}"
-                                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}"
-                                                     Value="{x:Null}">
-                                            <Setter TargetName="Border"
-                                                    Property="BorderThickness"
-                                                    Value="0" />
-                                        </DataTrigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
-
     <Window.DataContext>
-        <local:ViewModel />
+        <local:Kernel />
     </Window.DataContext>
 
-    <DataGrid AutoGenerateColumns="False"
-              IsReadOnly="True"
-              ItemsSource="{Binding Items}">
+    <TabControl>
+        <TabItem Header="ListBox in DataGrid">
+            <TabItem.Resources>
+                <local:StepsDurationConverter x:Key="StepsDurationConverter" />
+                <local:StepsStartConverter x:Key="StepsStartConverter" />
+                <local:StepsStopConverter x:Key="StepsStopConverter" />
 
-        <DataGrid.Columns>
-            <DataGridTextColumn Header="Nom"
-                                Binding="{Binding Name}"
-                                ElementStyle="{StaticResource CellTextMiddleStyle}" />
+                <Style x:Key="CellTextMiddleStyle" TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
 
-            <DataGridTextColumn Header="Durée"
-                                Binding="{Binding Duration, StringFormat='{}{0:d\\.hh\\:mm\\:ss}'}"
-                                ElementStyle="{StaticResource CellTextMiddleStyle}" />
+                <Style x:Key="ListViewInColumnStyle" TargetType="ListView">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="ItemContainerStyle">
+                        <Setter.Value>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <Border x:Name="Border"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderBrush="LightGray"
+                                                    BorderThickness="0 1 0 0">
+                                                <ContentPresenter Content="{TemplateBinding Content}"
+                                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}"
+                                                             Value="{x:Null}">
+                                                    <Setter TargetName="Border"
+                                                            Property="BorderThickness"
+                                                            Value="0" />
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabItem.Resources>
+            <TabItem.Content>
+                <DataGrid AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          ItemsSource="{Binding ViewModel.Items}">
 
-            <DataGridTextColumn Header="Paliers"
-                                Binding="{Binding Steps.Count}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock"
-                           BasedOn="{StaticResource CellTextMiddleStyle}">
-                        <Setter Property="TextAlignment" Value="Right" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nom"
+                                            Binding="{Binding Name}"
+                                            ElementStyle="{StaticResource CellTextMiddleStyle}" />
 
-            <DataGridTemplateColumn Header="Durée du palier"
-                                    ClipboardContentBinding="{Binding Steps, Converter={StaticResource StepsDurationConverter}}"
-                                    Width="*">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate DataType="local:ItemViewModel">
-                        <ListView ItemsSource="{Binding Steps}"
-                                  Style="{StaticResource ListViewInColumnStyle}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate DataType="local:StepViewModel">
-                                    <TextBlock Text="{Binding Duration, StringFormat='{}{0:d\\.hh\\:mm\\:ss}'}" />
+                        <DataGridTextColumn Header="Durée"
+                                            Binding="{Binding Duration, StringFormat='{}{0:d\\.hh\\:mm\\:ss}'}"
+                                            ElementStyle="{StaticResource CellTextMiddleStyle}" />
+
+                        <DataGridTextColumn Header="Paliers"
+                                            Binding="{Binding Steps.Count}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock"
+                                       BasedOn="{StaticResource CellTextMiddleStyle}">
+                                    <Setter Property="HorizontalAlignment" Value="Right" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Header="Durée du palier"
+                                                ClipboardContentBinding="{Binding Steps, Converter={StaticResource StepsDurationConverter}}"
+                                                Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="local:ItemViewModel">
+                                    <ListView ItemsSource="{Binding Steps}"
+                                              Style="{StaticResource ListViewInColumnStyle}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate DataType="local:StepViewModel">
+                                                <TextBlock Text="{Binding Duration, StringFormat='{}{0:d\\.hh\\:mm\\:ss}'}" />
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
                                 </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Header="Température initiale"
+                        <DataGridTemplateColumn Header="Température initiale"
                                     ClipboardContentBinding="{Binding Steps, Converter={StaticResource StepsStartConverter}}"
                                     Width="*">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate DataType="local:ItemViewModel">
-                        <ListView ItemsSource="{Binding Steps}"
-                                  Style="{StaticResource ListViewInColumnStyle}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate DataType="local:StepViewModel">
-                                    <TextBlock Text="{Binding Start}"/>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="local:ItemViewModel">
+                                    <ListView ItemsSource="{Binding Steps}"
+                                              Style="{StaticResource ListViewInColumnStyle}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate DataType="local:StepViewModel">
+                                                <TextBlock Text="{Binding Start}"/>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
                                 </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Header="Température finale"
-                                    ClipboardContentBinding="{Binding Steps, Converter={StaticResource StepsStopConverter}}"
-                                    Width="*">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate DataType="local:ItemViewModel">
-                        <ListView ItemsSource="{Binding Steps}"
-                                  Style="{StaticResource ListViewInColumnStyle}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate DataType="local:StepViewModel">
-                                    <TextBlock Text="{Binding Stop}"/>
+                        <DataGridTemplateColumn Header="Température finale"
+                                                ClipboardContentBinding="{Binding Steps, Converter={StaticResource StepsStopConverter}}"
+                                                Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="local:ItemViewModel">
+                                    <ListView ItemsSource="{Binding Steps}"
+                                              Style="{StaticResource ListViewInColumnStyle}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate DataType="local:StepViewModel">
+                                                <TextBlock Text="{Binding Stop}"/>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
                                 </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-        </DataGrid.Columns>
-    </DataGrid>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem.Content>
+        </TabItem>
+        <TabItem Header="DataGrid with Groups" Height="20" VerticalAlignment="Top">
+            <TabItem.Resources>
+                <CollectionViewSource x:Key="CollectionViewSource"
+                                      Source="{Binding FlatViewModel.Items}">
+                    <CollectionViewSource.GroupDescriptions>
+                        <PropertyGroupDescription PropertyName="GroupKey" />
+                    </CollectionViewSource.GroupDescriptions>
+                </CollectionViewSource>
+
+                <local:IsFirstItemOfGroupConverter x:Key="IsFirstItemOfGroupConverter" />
+
+                <Style x:Key="GroupCellStyle"
+                       TargetType="DataGridCell"
+                       BasedOn="{StaticResource {x:Type DataGridCell}}"> 
+                    <Style.Triggers>
+                        <DataTrigger Value="false">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource IsFirstItemOfGroupConverter}">
+                                    <Binding Source="{StaticResource CollectionViewSource}" />
+                                    <Binding Path="."/>
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <DataTrigger.Setters>
+                                <Setter Property="Foreground" Value="#40000000" />
+                            </DataTrigger.Setters>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TabItem.Resources>
+            <DataGrid AutoGenerateColumns="False"
+                      CanUserSortColumns="True"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding Source={StaticResource CollectionViewSource}}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nom" Binding="{Binding Name}" CellStyle="{StaticResource GroupCellStyle}" />
+                    <DataGridTextColumn Header="Durée" Binding="{Binding TotalDuration}" CellStyle="{StaticResource GroupCellStyle}" />
+                    <DataGridTextColumn Header="Palier" Binding="{Binding StepPosition}" />
+                    <DataGridTextColumn Header="Durée du palier" Binding="{Binding StepDuration}" />
+                    <DataGridTextColumn Header="Température initiale" Binding="{Binding StepStart}" />
+                    <DataGridTextColumn Header="Température finale" Binding="{Binding StepStop}" />
+                </DataGrid.Columns>
+
+                <DataGrid.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="GroupItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="GroupItem">
+                                            <StackPanel Orientation="Vertical">
+                                                <Rectangle Height="2"
+                                                           Stroke="Black"
+                                                           SnapsToDevicePixels="True" />
+
+                                                <ItemsPresenter Margin="0 0 0 5" />
+                                            </StackPanel>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </DataGrid.GroupStyle>
+            </DataGrid>
+        </TabItem>
+    </TabControl>
 </Window>

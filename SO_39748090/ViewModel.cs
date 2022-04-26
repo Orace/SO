@@ -4,14 +4,68 @@ using System.Linq;
 
 namespace SO_39748090;
 
+public class FlatViewModel
+{
+    public FlatViewModel(Model model)
+    {
+        Items = model.Items
+                     .SelectMany(item => item.Steps.Select((step, i) => new FlatItemViewModel(item, i, step.Duration, step.Start, step.Stop)))
+                     .ToList();
+    }
+
+    public IReadOnlyList<FlatItemViewModel> Items { get; }
+}
+
+public class FlatItemViewModel
+{
+    public FlatItemViewModel(ItemModel item,
+                             int stepIndex,
+                             TimeSpan stepDuration,
+                             Temperature stepStart,
+                             Temperature stepStop)
+    {
+        GroupKey = item;
+        Name = item.Name;
+        TotalDuration = item.Duration;
+        StepPosition = $"{stepIndex + 1}/{item.Steps.Count}";
+        StepDuration = stepDuration;
+        StepStart = stepStart;
+        StepStop = stepStop;
+    }
+
+    public object GroupKey { get; }
+
+    public string Name { get; }
+
+    public TimeSpan TotalDuration { get; }
+
+    public string StepPosition { get; }
+
+    public TimeSpan StepDuration { get; }
+
+    public Temperature StepStart { get; }
+
+    public Temperature StepStop { get; }
+}
+
 public class ViewModel
 {
-    public ViewModel()
+    public ViewModel(Model model)
     {
-        Items = Enumerable.Range(0, 10).Select(_ => RandomEx.RandomItemViewModel()).ToList();
+        Items = model.Items.Select(ModelToViewModel).ToList();
     }
 
     public IReadOnlyList<ItemViewModel> Items { get; }
+
+    private static ItemViewModel ModelToViewModel(ItemModel item)
+    {
+        return new ItemViewModel(item.Name, item.Steps.Select(ModelToViewModel).ToList());
+    }
+
+    private static StepViewModel ModelToViewModel(StepModel stepModel)
+    {
+        return new StepViewModel(stepModel.Duration, stepModel.Start, stepModel.Stop);
+    }
 }
 
 public class ItemViewModel
@@ -44,53 +98,4 @@ public class StepViewModel
     public TimeSpan Duration { get; }
     public Temperature Start { get; }
     public Temperature Stop { get; }
-}
-
-public readonly record struct Temperature(double InDegree)
-{
-    // \u00A0 is NBSP
-    public override string ToString() => $"{InDegree:F2}\u00A0°C";
-}
-
-public static class RandomEx
-{
-    private static IReadOnlyList<char> Chars { get; } = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToList();
-
-    public static T RandomElement<T>(this IReadOnlyList<T> collection)
-    {
-        return collection[Random.Shared.Next(collection.Count)];
-    }
-
-    public static ItemViewModel RandomItemViewModel()
-    {
-        return new ItemViewModel(RandomString(8),
-                                 Enumerable.Range(0, 1 + Random.Shared.Next(5))
-                                           .Select(_ => RandomStepViewModel())
-                                           .ToList());
-
-    }
-
-    private static StepViewModel RandomStepViewModel()
-    {
-        return new StepViewModel(RandomTimeSpan(TimeSpan.FromHours(8)),
-                                 RandomTemperature(new Temperature(250)),
-                                 RandomTemperature(new Temperature(400)));
-    }
-
-    private static Temperature RandomTemperature(Temperature maxTemperature)
-    {
-        return new Temperature(Random.Shared.NextDouble() * maxTemperature.InDegree);
-    }
-
-    public static string RandomString(int length)
-    {
-        return new string(Enumerable.Range(0, length)
-                                    .Select(_ => Chars.RandomElement())
-                                    .ToArray());
-    }
-
-    private static TimeSpan RandomTimeSpan(TimeSpan maxLength)
-    {
-        return new TimeSpan(Random.Shared.NextInt64(maxLength.Ticks));
-    }
 }
