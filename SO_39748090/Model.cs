@@ -8,7 +8,7 @@ public class Model
 {
     public Model()
     {
-        Items = Enumerable.Range(0, 10).Select(_ => RandomEx.RandomItemModel()).ToList();
+        Items = Enumerable.Range(0, 12).Select(_ => RandomEx.RandomItemModel()).ToList();
     }
 
     public IReadOnlyList<ItemModel> Items { get; }
@@ -64,7 +64,7 @@ public static class RandomEx
     public static ItemModel RandomItemModel()
     {
         return new ItemModel(RandomString(8),
-                             Enumerable.Range(0, 1 + Random.Shared.Next(5))
+                             Enumerable.Range(0, 8)
                                        .Select(_ => RandomStepModel())
                                        .ToList());
 
