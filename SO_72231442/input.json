@@ -1,0 +1,319 @@
+{
+  "status": "OK",
+  "cases": {
+    "_id": "61f8126266221531009f8909",
+    "procedureLower": "AT&T PLANT V.1",
+    "nameLower": "AT&T PLANT V.1 - v.1 - 31.01.2022",
+    "updatedAt": "2022-04-01T15:06:32.483Z",
+    "createdAt": "2022-01-31T16:46:26.139Z",
+    "device": "56a0b485303163de1a64e894",
+    "procedure": {
+      "_id": "61e918809033533000bc1034",
+
+      "version": {
+        "_id": "61f8106266221531009f8908",
+        "updatedAt": "2022-01-31T16:37:54.193Z",
+        "createdAt": "2022-01-31T16:37:54.193Z",
+        "procedure": "61e918809033533000bc1034",
+        "user": "619664488f8190280002cde9",
+        "version": 44,
+        "deleted": false,
+        "forms": [
+          {
+            "active": true,
+            "oldorder": 1,
+            "sections": [
+              {
+                "rows": [
+                  {
+                    "order": 1,
+                    "fields": [
+                      {
+                        "required": true,
+                        "guid": "36559be6-a141-4723-834b-b8194d3108d9",
+                        "dndtype": "\"item\"",
+                        "type": "input",
+                        "icon": "fa-pencil-alt",
+                        "rules": "required",
+                        "dependencies": [],
+                        "hint": "",
+                        "help": ".....",
+                        "label": "SP"
+                      },
+                      {
+                        "advanced": false,
+                        "required": true,
+                        "guid": "5e1b925c-b517-4fa1-8ba9-5af68ce2cc86",
+                        "dndtype": "\"item\"",
+                        "type": "date",
+                        "icon": "fa-calendar",
+                        "rules": "required",
+                        "dependencies": [],
+                        "hint": "",
+                        "help": "Compilation data",
+                        "label": "DATA"
+                      }
+                    ],
+                    "guid": "7fa2a65b-f13a-4ea4-8371-0c5c5f96f8af"
+                  },
+                  {
+                    "order": 2,
+                    "fields": [
+                      {
+                        "required": true,
+                        "dataSource": {
+                          "codelist": "60f6b7bd94457b1101e03435"
+                        },
+                        "guid": "9aedcaa0-0ac2-4339-b287-2e826766d14c",
+                        "dndtype": "\"item\"",
+                        "type": "radio",
+                        "icon": "fa-dot-circle",
+                        "rules": "required",
+                        "dependencies": [],
+                        "hint": "",
+                        "help": "",
+                        "label": "CUSTOMER AVAILABLE"
+                      },
+                      {
+                        "required": true,
+                        "guid": "2d06c750-053b-4cdf-8684-f03754cda1c4",
+                        "dndtype": "\"item\"",
+                        "type": "input",
+                        "icon": "fa-pencil-alt",
+                        "rules": "required",
+                        "dependencies": [],
+                        "hint": "",
+                        "help": "",
+                        "label": "CUSTOMER REFERENCE"
+                      }
+                    ],
+                    "guid": "eb83691e-5652-48b1-8b0b-247f460e779a"
+                  },
+                  {
+                    "order": 3,
+                    "fields": [],
+                    "guid": "dd80d230-b520-48eb-b4a4-5fe7d54f079f"
+                  }
+                ],
+                "properties": [],
+                "dependencies": [],
+                "label": "SPEAKER",
+                "guid": "9d03344a-72c2-4d10-8a34-c63ac9935876"
+              },
+              {
+                "rows": [
+                  {
+                    "order": 1,
+                    "fields": [
+                      {
+                        "dataSource": {
+                          "codelist": "61e91cd39033533000bc1038"
+                        },
+                        "required": true,
+                        "advanced": false,
+                        "guid": "545d42e5-7c38-435a-9753-a0859cb82a82",
+                        "dndtype": "\"item\"",
+                        "type": "radio",
+                        "icon": "fa-dot-circle",
+                        "rules": "required|required",
+                        "dependencies": [],
+                        "hint": "",
+                        "help": "",
+                        "label": "TYPE PORTANTE"
+                      }
+                    ],
+                    "guid": "ecbefe7e-3570-4e8b-8cb2-cc71eeed7379"
+                  },
+                  {
+                    "order": 2,
+                    "fields": [
+                      {
+                        "required": false,
+                        "dataSource": {
+                          "codelist": "61e91dc69033533000bc103d"
+                        },
+                        "guid": "80ccaa3d-2a3a-44ed-8a09-fa32d38ce375",
+                        "dndtype": "\"item\"",
+                        "type": "radio",
+                        "icon": "fa-dot-circle",
+                        "rules": "",
+                        "dependencies": [],
+                        "hint": "",
+                        "help": "",
+                        "label": "CABLES"
+                      }
+                    ],
+                    "guid": "655ab2ba-b3d4-485d-b269-95c30062151c"
+                  },
+                  {
+                    "order": 3,
+                    "guid": "5424ba1f-1f81-42ee-8ad5-32d678643e6f",
+                    "fields": [
+                      {
+                        "required": false,
+                        "dataSource": {
+                          "codelist": "61e91dc69033533000bc103d"
+                        },
+                        "guid": "6fe8882c-90d3-4438-a7b2-4ddb01ae4177",
+                        "dndtype": "\"item\"",
+                        "type": "radio",
+                        "icon": "fa-dot-circle",
+                        "rules": "",
+                        "dependencies": [],
+                        "hint": "",
+                        "help": "",
+                        "label": "CABLE"
+                      }
+                    ]
+                  },
+                  {
+                    "order": 4,
+                    "guid": "772a8868-ea62-461c-bbd0-1054cd09fd68",
+                    "fields": [
+                      {
+                        "required": false,
+                        "dataSource": {
+                          "codelist": "61e91dd39033533000bc103e"
+                        },
+                        "guid": "74c01620-7420-4e5d-ae3a-ed91bbb5fc6c",
+                        "dndtype": "\"item\"",
+                        "type": "radio",
+                        "icon": "fa-dot-circle",
+                        "rules": "",
+                        "dependencies": [],
+                        "hint": "",
+                        "help": "",
+                        "label": "TERMINATE"
+                      }
+                    ]
+                  },
+                  {
+                    "order": 5,
+                    "guid": "457b5246-458b-483d-830a-e22ee15b9556",
+                    "fields": [
+                      {
+                        "required": false,
+                        "dataSource": {
+                          "codelist": "61e91ddd9033533000bc103f"
+                        },
+                        "guid": "1673f32f-3c42-4700-8597-230299a0535d",
+                        "dndtype": "\"item\"",
+                        "type": "radio",
+                        "icon": "fa-dot-circle",
+                        "rules": "",
+                        "dependencies": [],
+                        "hint": "",
+                        "help": "",
+                        "label": "INFRASTRUCTURE"
+                      }
+                    ]
+                  },
+                  {
+                    "order": 6,
+                    "fields": [],
+                    "guid": "3c00be79-c504-4ec5-84af-b5ed8a2a7936"
+                  }
+                ],
+                "properties": [],
+                "dependencies": [],
+                "label": "NETWORK STATUS",
+                "guid": "7d2de01c-6bbe-4c44-94bb-a884ebcf2d75"
+              }
+            ]
+          }
+        ],
+        "published": false,
+        "__v": 0
+      }
+    },
+    "hash": "67a18a162d3ddb928be1e4c859ef88c8",
+    "name": "FREE ACCESS - V.1 - 31.01.2022",
+    "location": "null",
+    "status": "closed",
+    "utcOffset": 120,
+    "user": {
+      "_id": "619664488f8190280002cde9",
+      "firstName": "Asd",
+      "lastName": "Asd",
+      "email": "asd@asd.it",
+      "showInScheduler": false,
+      "disableKeycloakLogin": false,
+      "groups": [],
+      "active": true,
+      "allowADLogin": true
+    },
+    "deleted": false,
+    "extendedTitle": [],
+    "timeTracking": [],
+    "workStart": "2022-01-31T16:37:58.948Z",
+    "feSyncDate": "2022-04-01T15:06:30.204Z",
+    "feVersion": "v3.7.1-20-g7d1a81035",
+    "reopen": false,
+    "originTime": "2022-01-31T16:38:28.573Z",
+    "content": [
+      {
+        "field": "5E1B925C-B517-4FA1-8BA9-5AF68CE2CC86",
+        "value": "2021-11-23T15:37:59.386Z"
+      },
+      {
+        "field": "4F8412AB-5416-4C6C-9FBE-4ED5E6F08EE4",
+        "value": ""
+      },
+      {
+        "field": "96039A4B-D5D9-4EBD-9F01-FAD5124F2008",
+        "value": ""
+      },
+      {
+        "field": "36559BE6-A141-4723-834B-B8194D3108D9",
+        "value": "14042547"
+      },
+      {
+        "field": "9AEDCAA0-0AC2-4339-B287-2E826766D14C",
+        "value": {
+          "Label": "Yes",
+          "Value": "Yes"
+        }
+      },
+      {
+        "field": "2D06C750-053B-4CDF-8684-F03754CDA1C4",
+        "value": "Mr. John DOE"
+      },
+      {
+        "field": "545D42E5-7C38-435A-9753-A0859CB82A82",
+        "value": {
+          "Label": "Rame",
+          "Value": "Rame"
+        }
+      },
+      {
+        "field": "80CCAA3D-2A3A-44ED-8A09-FA32D38CE375",
+        "value": {
+          "Label": "AT WALL",
+          "Value": "AT WALL"
+        }
+      },
+      {
+        "field": "74C01620-7420-4E5D-AE3A-ED91BBB5FC6C",
+        "value": {
+          "Label": "AT WALL",
+          "Value": "AT WALL"
+        }
+      }
+    ],
+    "__v": 1,
+    "closedBy": "61405b68db0e4c2900642020",
+    "edited": {
+      "at": "2022-04-01T15:06:30.204Z",
+      "by": "NAME_SURNAME"
+    },
+    "documents": [
+      {
+        "_id": "61e960909033533000bc1105",
+        "label": "ACCESS v.1",
+        "description": ""
+      }
+    ],
+    "tasks": [],
+    "hasTasks": false
+  }
+}
