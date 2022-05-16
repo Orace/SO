@@ -10,6 +10,7 @@ public class ViewModel : NotifyPropertyChangedBase
     public ViewModel()
     {
         PressedChangedCommand = new ActionCommand(PressedChanged);
+        PressedChangedCommandForAp = new ActionCommand(PressedChangedForAp);
     }
 
     private int _count;
@@ -21,6 +22,8 @@ public class ViewModel : NotifyPropertyChangedBase
     }
 
     public ICommand PressedChangedCommand { get; }
+
+    public ICommand PressedChangedCommandForAp { get; }
 
     private void PressedChanged(object o)
     {
@@ -35,6 +38,21 @@ public class ViewModel : NotifyPropertyChangedBase
 
         if (eventArgs.NewValue is false)
             Count--;
+    }
+    
+    private void PressedChangedForAp(object o)
+    {
+        if (o is not bool isPressed)
+            return;
 
+        if (isPressed)
+        {
+            Count++;
+        }
+        else
+        {
+            Count--;
+        }
+            
     }
 }

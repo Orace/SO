@@ -25,6 +25,10 @@
                 </i:Interaction.Triggers>
             </local:CustomButton>
 
+            <Button Content="Clack me!"
+                    Padding="5"
+                    local:ButtonEx.PressedChangedCommand="{Binding Path=PressedChangedCommandForAp}"/>
+
             <Label Content="{Binding Count}" />
         </StackPanel>
     </Grid>
