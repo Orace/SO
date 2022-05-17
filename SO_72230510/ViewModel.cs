@@ -27,10 +27,7 @@ public class ViewModel : NotifyPropertyChangedBase
 
     private void PressedChanged(object o)
     {
-        if (o is not RoutedEventArgs routedEventArgs)
-            return;
-
-        if (routedEventArgs.OriginalSource is not DependencyPropertyChangedEventArgs eventArgs)
+        if (o is not RoutedEventArgs { OriginalSource: DependencyPropertyChangedEventArgs eventArgs })
             return;
 
         if (eventArgs.NewValue is true)

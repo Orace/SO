@@ -2,7 +2,7 @@
 using System.Windows.Markup;
 using System.Windows.Media;
 
-var message = "I  you  💋  嗎";
+const string message = "I  you  💋  嗎";
 var fontFamily = new FontFamily("Arial");
 
 

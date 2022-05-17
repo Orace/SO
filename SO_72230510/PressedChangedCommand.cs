@@ -26,7 +26,7 @@ public static class ButtonEx
 
     private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is not ButtonBase button)
+        if (d is not ButtonBase)
             return;
 
         if (e.OldValue is null && e.NewValue is not null)
