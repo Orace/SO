@@ -24,7 +24,7 @@ public static class DbSetExtension
         var entityType = originalSet.EntityType;
         var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) })!;
 
-        // Ack to retrieve Enumerable.Any<>(Func<,>)
+        // Ack to retrieve Enumerable.Any<>(IEnumerable<>, Func<,>)
         var anyMethod = typeof(Enumerable)
                        .GetMethods()
                        .Single(m => m.Name == "Any" &&
@@ -81,6 +81,7 @@ public static class DbSetExtension
                                                              // {n => n.Name.Contains(search)}
                                                              var lambda = Expression.Lambda(contains, nParam);
 
+                                                             // {Enumerable.Any(x.Navigations, n => n.Name.Contains(search))
                                                              return Expression.Call(null, genericAnyMethod, xDotNavigations, lambda);
                                                          });
                                             }).ToList();
