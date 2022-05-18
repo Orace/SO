@@ -30,13 +30,14 @@ public static class DbSetExtension
         // {search}
         var constExpr = Expression.Constant(search);
 
-        // {x.Name}
+        // {x.Name} list
         var xDotNames = entityType.GetProperties()
                                   .Where(p => p.ClrType == typeof(string))
                                   .Select(p => Expression.Property(xParam, p.Name));
 
-        // {x.Navigation.Name}
+        // {x.Navigation.Name} list
         var xDotOtherDotNames = entityType.GetDeclaredNavigations()
+                                          .Where(n => !n.IsCollection)
                                           .SelectMany(n => n.TargetEntityType
                                                             .GetProperties()
                                                             .Where(p => p.ClrType == typeof(string))

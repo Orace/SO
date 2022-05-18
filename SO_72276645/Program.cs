@@ -18,7 +18,6 @@ var nyork = new City
     ZipCode = "XXXXX"
 };
 
-
 var bill = new Person
 {
     Name = "Bill",
@@ -32,6 +31,14 @@ var missHilton = new Person
     CityOfBirth = nyork,
     Age = 22
 };
+
+var tom = new Pet { Name = "Tom", Type = "Mammal", Owner = missHilton };
+var tinkerbell = new Pet { Name = "Feu Tinkerbell", Type = "Mammal", Owner = missHilton };
+
+context.Pets.Add(tom);
+context.Pets.Add(tinkerbell);
+
+missHilton.Pets = new List<Pet> { tom, tinkerbell };
 
 context.Cities.Add(nyork);
 context.Cities.Add(paris);
@@ -47,5 +54,11 @@ Console.WriteLine(string.Join(", ", context.Persons
 Console.WriteLine(string.Join(", ", context.Persons
                                            .Where(p => p.Age > 30)
                                            .DeepSearch(context, "Paris")));
+
+Console.WriteLine(string.Join(", ", context.Pets
+                                           .DeepSearch("Paris")));
+
+Console.WriteLine(string.Join(", ", context.Persons
+                                           .DeepSearch("Mammal")));
 
 Console.ReadLine();

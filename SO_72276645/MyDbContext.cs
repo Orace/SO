@@ -11,6 +11,8 @@ public class MyDbContext : DbContext
     public DbSet<City> Cities { get; set; }
 
     public DbSet<Person> Persons { get; set; }
+    
+    public DbSet<Pet> Pets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -18,7 +20,22 @@ public class MyDbContext : DbContext
 
         modelBuilder.Entity<Person>()
                     .HasOne(p => p.CityOfBirth);
+
+        modelBuilder.Entity<Pet>()
+                    .HasOne(p => p.Owner)
+                    .WithMany(p => p.Pets);
     }
+}
+
+public class Pet
+{
+    public int PetId { get; set; }
+
+    public string Name { get; set; }
+    public Person Owner { get; set; }
+    public string Type { get; set; }
+
+    public override string ToString() => Name;
 }
 
 public class Person
@@ -28,6 +45,7 @@ public class Person
     public int Age { get; set; }
     public City CityOfBirth { get; set; }
     public string Name { get; set; }
+    public List<Pet> Pets { get; set; }
 
     public override string ToString() => Name;
 }
