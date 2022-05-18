@@ -11,6 +11,13 @@ public static class DbSetExtension
         return DeepSearch(dbSet, dbSet, search);
     }
 
+    public static IQueryable<T> DeepSearch<T>(this IQueryable<T> queryable, DbContext dbContext, string search)
+        where T : class
+    {
+        var set = dbContext.Set<T>();
+        return DeepSearch(queryable, set, search);
+    }
+
     public static IQueryable<T> DeepSearch<T>(this IQueryable<T> queryable, DbSet<T> originalSet, string search)
         where T : class
     {

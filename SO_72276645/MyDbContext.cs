@@ -24,8 +24,10 @@ public class MyDbContext : DbContext
 public class Person
 {
     public int PersonId { get; set; }
-    public string Name { get; set; }
+    
+    public int Age { get; set; }
     public City CityOfBirth { get; set; }
+    public string Name { get; set; }
 
     public override string ToString() => Name;
 }

@@ -22,13 +22,15 @@ var nyork = new City
 var bill = new Person
 {
     Name = "Bill",
-    CityOfBirth = paris
+    CityOfBirth = paris,
+    Age = 38
 };
 
 var missHilton = new Person
 {
     Name = "Miss Paris",
-    CityOfBirth = nyork
+    CityOfBirth = nyork,
+    Age = 22
 };
 
 context.Cities.Add(nyork);
@@ -39,6 +41,11 @@ context.Persons.Add(missHilton);
 
 context.SaveChanges();
 
-Console.WriteLine(string.Join(", ", context.Persons.DeepSearch(context.Persons, "Paris")));
+Console.WriteLine(string.Join(", ", context.Persons
+                                           .DeepSearch("Paris")));
+
+Console.WriteLine(string.Join(", ", context.Persons
+                                           .Where(p => p.Age > 30)
+                                           .DeepSearch(context, "Paris")));
 
 Console.ReadLine();
