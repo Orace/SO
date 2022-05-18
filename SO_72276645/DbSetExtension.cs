@@ -49,20 +49,20 @@ public static class DbSetExtension
                                                             .GetProperties()
                                                             .Where(p => p.ClrType == typeof(string))
                                                             .Select(p => NestedProperty(xParam, n.Name, p.Name)))
-                                          .Select(e => (Expression)Expression.Call(e, containsMethod, constExpr)); ;
+                                          .Select(e => Expression.Call(e, containsMethod, constExpr));
 
         // {x.Navigations.Any(n => n.Name.Contains(search))} list
         var xDotOthersDotNames = entityType.GetDeclaredNavigations()
                                            .Where(n => n.IsCollection)
                                            .SelectMany(n =>
-                                           {
-                                               var nType = n.ForeignKey.DeclaringEntityType.ClrType;
+                                            {
+                                                var nType = n.TargetEntityType.ClrType;
 
-                                               // Enumerable.Any<NType>
-                                               var genericAnyMethod = anyMethod.MakeGenericMethod(nType);
+                                                // Enumerable.Any<NType>
+                                                var genericAnyMethod = anyMethod.MakeGenericMethod(nType);
 
-                                               // {n}
-                                               var nParam = Expression.Parameter(nType, "n");
+                                                // {n}
+                                                var nParam = Expression.Parameter(nType, "n");
 
                                                 // {x.Navigations}
                                                 var xDotNavigations = Expression.Property(xParam, n.Name);
@@ -74,7 +74,7 @@ public static class DbSetExtension
                                                          {
                                                              // {n.Name}
                                                              var nDotName = Expression.Property(nParam, p.Name);
-                                                             
+
                                                              // {n.Name.Contains(search)}
                                                              var contains = Expression.Call(nDotName, containsMethod, constExpr);
 
@@ -84,7 +84,8 @@ public static class DbSetExtension
                                                              // {Enumerable.Any(x.Navigations, n => n.Name.Contains(search))
                                                              return Expression.Call(null, genericAnyMethod, xDotNavigations, lambda);
                                                          });
-                                            }).ToList();
+                                            })
+                                           .ToList();
 
         // { || ... }
         var orExpression = xDotNames.Concat(xDotOtherDotNames)

@@ -48,16 +48,20 @@ context.Persons.Add(missHilton);
 
 context.SaveChanges();
 
+Console.Write("#1 ");
 Console.WriteLine(string.Join(", ", context.Persons
                                            .DeepSearch("Paris")));
 
+Console.Write("#2 ");
 Console.WriteLine(string.Join(", ", context.Persons
                                            .Where(p => p.Age > 30)
                                            .DeepSearch(context, "Paris")));
 
+Console.Write("#3 ");
 Console.WriteLine(string.Join(", ", context.Pets
                                            .DeepSearch("Paris")));
 
+Console.Write("#4 ");
 Console.WriteLine(string.Join(", ", context.Persons
                                            .DeepSearch("Mammal")));
 
