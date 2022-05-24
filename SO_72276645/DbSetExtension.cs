@@ -43,7 +43,7 @@ public static class DbSetExtension
 
         // {predicate(x.Name)} list
         var xDotNames = entityType.GetProperties()
-                                  .Where(p => p.ClrType == typeof(TMember))
+                                  .Where(p => !p.IsKey() && p.ClrType == typeof(TMember))
                                   .Select(p => Expression.Property(xParam, p.Name))
                                   .Select(e => GetModifyedPredicateBody(predicate, e));
 
@@ -52,7 +52,7 @@ public static class DbSetExtension
                                           .Where(n => !n.IsCollection)
                                           .SelectMany(n => n.TargetEntityType
                                                             .GetProperties()
-                                                            .Where(p => p.ClrType == typeof(TMember))
+                                                            .Where(p => !p.IsKey() && p.ClrType == typeof(TMember))
                                                             .Select(p => NestedProperty(xParam, n.Name, p.Name)))
                                           .Select(e => GetModifyedPredicateBody(predicate, e));
 
@@ -74,7 +74,7 @@ public static class DbSetExtension
 
                                                 return n.TargetEntityType
                                                         .GetProperties()
-                                                        .Where(p => p.ClrType == typeof(TMember))
+                                                        .Where(p => !p.IsKey() && p.ClrType == typeof(TMember))
                                                         .Select(p =>
                                                          {
                                                              // {n.Name}
