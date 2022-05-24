@@ -69,4 +69,8 @@ Console.Write("#5 ");
 Console.WriteLine(string.Join(", ", context.Pets
                                            .DeepSearch<Pet, int>(i => i > 18 && i < 30)));
 
+Console.Write("#6 ");
+Console.WriteLine(string.Join(", ", context.Pets
+                                           .DeepSearch("e")));
+
 Console.ReadLine();
