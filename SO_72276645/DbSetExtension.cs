@@ -8,21 +8,29 @@ public static class DbSetExtension
     public static IQueryable<T> DeepSearch<T>(this DbSet<T> dbSet, string search)
         where T : class
     {
-        return DeepSearch(dbSet, dbSet, search);
+        return DeepSearch<T, string>(dbSet, dbSet, s => s.Contains(search));
+    }
+
+    public static IQueryable<T> DeepSearch<T, TMember>(this DbSet<T> dbSet,
+                                                       Expression<Func<TMember, bool>> predicate)
+        where T : class
+    {
+        return DeepSearch(dbSet, dbSet, predicate);
     }
 
     public static IQueryable<T> DeepSearch<T>(this IQueryable<T> queryable, DbContext dbContext, string search)
         where T : class
     {
         var set = dbContext.Set<T>();
-        return DeepSearch(queryable, set, search);
+        return DeepSearch<T, string>(queryable, set, s => s.Contains(search));
     }
 
-    public static IQueryable<T> DeepSearch<T>(this IQueryable<T> queryable, DbSet<T> originalSet, string search)
+    public static IQueryable<T> DeepSearch<T, TMember>(this IQueryable<T> queryable,
+                                                       DbSet<T> originalSet,
+                                                       Expression<Func<TMember, bool>> predicate)
         where T : class
     {
         var entityType = originalSet.EntityType;
-        var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) })!;
 
         // Ack to retrieve Enumerable.Any<>(IEnumerable<>, Func<,>)
         var anyMethod = typeof(Enumerable)
@@ -33,25 +41,22 @@ public static class DbSetExtension
         // {x}
         var xParam = Expression.Parameter(typeof(T), "x");
 
-        // {search}
-        var constExpr = Expression.Constant(search);
-
-        // {x.Name.Contains(search)} list
+        // {predicate(x.Name)} list
         var xDotNames = entityType.GetProperties()
-                                  .Where(p => p.ClrType == typeof(string))
+                                  .Where(p => p.ClrType == typeof(TMember))
                                   .Select(p => Expression.Property(xParam, p.Name))
-                                  .Select(e => (Expression)Expression.Call(e, containsMethod, constExpr));
+                                  .Select(e => GetModifyedPredicateBody(predicate, e));
 
-        // {x.Navigation.Name.Contains(search)} list
+        // {predicate(x.Navigation.Name)} list
         var xDotOtherDotNames = entityType.GetDeclaredNavigations()
                                           .Where(n => !n.IsCollection)
                                           .SelectMany(n => n.TargetEntityType
                                                             .GetProperties()
-                                                            .Where(p => p.ClrType == typeof(string))
+                                                            .Where(p => p.ClrType == typeof(TMember))
                                                             .Select(p => NestedProperty(xParam, n.Name, p.Name)))
-                                          .Select(e => Expression.Call(e, containsMethod, constExpr));
+                                          .Select(e => GetModifyedPredicateBody(predicate, e));
 
-        // {x.Navigations.Any(n => n.Name.Contains(search))} list
+        // {x.Navigations.Any(n => predicate(n.Name))} list
         var xDotOthersDotNames = entityType.GetDeclaredNavigations()
                                            .Where(n => n.IsCollection)
                                            .SelectMany(n =>
@@ -69,17 +74,14 @@ public static class DbSetExtension
 
                                                 return n.TargetEntityType
                                                         .GetProperties()
-                                                        .Where(p => p.ClrType == typeof(string))
+                                                        .Where(p => p.ClrType == typeof(TMember))
                                                         .Select(p =>
                                                          {
                                                              // {n.Name}
                                                              var nDotName = Expression.Property(nParam, p.Name);
 
-                                                             // {n.Name.Contains(search)}
-                                                             var contains = Expression.Call(nDotName, containsMethod, constExpr);
-
-                                                             // {n => n.Name.Contains(search)}
-                                                             var lambda = Expression.Lambda(contains, nParam);
+                                                             // {n => predicate(n.Name)}
+                                                             var lambda = Expression.Lambda(GetModifyedPredicateBody(predicate, nDotName), nParam);
 
                                                              // {Enumerable.Any(x.Navigations, n => n.Name.Contains(search))
                                                              return Expression.Call(null, genericAnyMethod, xDotNavigations, lambda);
@@ -95,6 +97,13 @@ public static class DbSetExtension
         var lambda = Expression.Lambda<Func<T, bool>>(orExpression, xParam);
 
         return queryable.Where(lambda);
+    }
+
+    private static Expression GetModifyedPredicateBody<TMember>(Expression<Func<TMember, bool>> predicate,
+                                                                Expression extendedParam)
+    {
+        var result = ParameterReplacer.Replace(predicate, predicate.Parameters[0], extendedParam);
+        return result.Body;
     }
 
     private static Expression NestedProperty(Expression expression, params string[] propertyNames)

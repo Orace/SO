@@ -65,4 +65,8 @@ Console.Write("#4 ");
 Console.WriteLine(string.Join(", ", context.Persons
                                            .DeepSearch("Mammal")));
 
+Console.Write("#5 ");
+Console.WriteLine(string.Join(", ", context.Pets
+                                           .DeepSearch<Pet, int>(i => i == 22)));
+
 Console.ReadLine();
