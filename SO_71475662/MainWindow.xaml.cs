@@ -1,10 +1,9 @@
-﻿namespace SO_71475662
+﻿namespace SO_71475662;
+
+public partial class MainWindow
 {
-    public partial class MainWindow
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
