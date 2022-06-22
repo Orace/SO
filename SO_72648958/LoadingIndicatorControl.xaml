@@ -8,6 +8,11 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <StackPanel HorizontalAlignment="Stretch">
+        <Image gif:ImageBehavior.AnimatedSource="pack://application:,,,/SO_72648958;component/Images/Loading_Spinner.gif"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Width="30"
+               Height="30" />
         <Image gif:ImageBehavior.AnimatedSource="Images/Loading_Spinner.gif"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
