@@ -1,7 +1,7 @@
 ﻿using System.Text;
 
 var value = ReadInteger("Please provide a number");
-var digits = GetDigits(value);
+var digits = new Stack<int>(GetDigits(value).Reverse());
 
 foreach (var combinaison in GetCombinations(digits))
 {
@@ -20,26 +20,29 @@ static IEnumerable<IReadOnlyList<int>> GetCombinationsImplem(Stack<int> inStack,
     // recursion end point
     if (inStack.Count is 0)
     {
-        yield return outStack.Reverse().ToArray();
+        yield return outStack.ToArray();
         yield break;
     }
-    
-    var digit1 = inStack.Pop();
-    
-    // Put on digit from in to out
-    outStack.Push(digit1);
-    foreach (var combinaison in GetCombinationsImplem(inStack, outStack))
-    {
-        yield return combinaison;
-    }
-    outStack.Pop();
 
+    var digit1 = inStack.Pop();
+
+    // Try put one digit from in to out
+    if (digit1 is >= 1 and <= 26)
+    {
+        outStack.Push(digit1);
+        foreach (var combinaison in GetCombinationsImplem(inStack, outStack))
+        {
+            yield return combinaison;
+        }
+
+        outStack.Pop();
+    }
 
     // Try put two combined digit (1,2 => 12) from in to out
     if (inStack.TryPop(out var digit2))
     {
-        var v = digit1 * 10 + digit2;
-        if (v <= 26)
+        var v = digit1 + 10 * digit2;
+        if (v is >= 1 and <= 26)
         {
             outStack.Push(v);
             foreach (var combinaison in GetCombinationsImplem(inStack, outStack))
@@ -54,21 +57,20 @@ static IEnumerable<IReadOnlyList<int>> GetCombinationsImplem(Stack<int> inStack,
     inStack.Push(digit1);
 }
 
-static Stack<int> GetDigits(int value)
+static IEnumerable<int> GetDigits(int value)
 {
-    var result = new Stack<int>();
     while (value > 0)
     {
-        result.Push(value % 10);
+        yield return value % 10;
         value /= 10;
     }
-
-    return result;
 }
 
 static string GetString(IReadOnlyCollection<int> digits)
 {
     var sb = new StringBuilder(digits.Count);
+    sb.Append(string.Join("|", digits));
+    sb.Append(" => ");
     foreach (var digit in digits)
     {
         // Convert 1 to 'a', 2 to 'b', ...
