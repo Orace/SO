@@ -20,11 +20,15 @@ public class ItemsViewModel
 
         AddCommand = new ActionCommand(AddItem);
         RemoveCommand = new ActionCommand(RemoveItem);
+        ResetCommand = new ActionCommand(ResetItems);
     }
 
     public ICommand AddCommand { get; }
 
     public ICommand RemoveCommand { get; }
+
+    public ICommand ResetCommand { get; }
+
 
     public ObservableCollection<ItemViewModel> Items { get; }
 
@@ -39,6 +43,16 @@ public class ItemsViewModel
             return;
 
         Items.RemoveAt(Random.Shared.Next(Items.Count));
+    }
+
+    private void ResetItems()
+    {
+        var count = Items.Count;
+        Items.Clear();
+        for (var i = 0; i < count; i++)
+        {
+            AddItem();
+        }
     }
 
     private static ItemViewModel BuildItem()
