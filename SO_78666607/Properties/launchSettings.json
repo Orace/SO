@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SO_78666607": {
+      "commandName": "Project",
+      "commandLineArgs": "input.txt"
+    }
+  }
+}
